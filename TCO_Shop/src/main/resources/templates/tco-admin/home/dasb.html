@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+th:replace="~{tco-admin/layout-admin/index :: dynamic(~{::main})}">
+<body>
+<main ng-controller="dashboard-ctrl">
+
+
+<!-- CONTENT WRAPPER -->
+<div class="ec-content-wrapper">
+    <div class="content">
+        <!-- Top Statistics -->
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+                <div class="card card-mini dash-card card-1">
+                    <div class="card-body">
+                        <h2 class="mb-1">{{usercount}}</h2>
+                        <p>Tổng người dùng</p>
+                        <span class="mdi mdi-account"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+                <div class="card card-mini dash-card card-2">
+                    <div class="card-body">
+                        <h2 class="mb-1">{{allproductcount}}</h2>
+                        <p>Hàng tồn kho</p>
+                        <span class="mdi mdi-package-variant-closed"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+                <div class="card card-mini dash-card card-3">
+                    <div class="card-body">
+                        <h2 class="mb-1">{{allordercount}}</h2>
+                        <p>Tổng đơn hàng</p>
+                        <span class="mdi mdi-cart-arrow-down"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+                <div class="card card-mini dash-card card-4">
+                    <div class="card-body">
+                        <h2 th:if="${currentUser.role.id} == 'SADMIN'" class="mb-1">{{turnover | currency:'':0}} VND</h2>
+                        <h2 th:if="${currentUser.role.id} != 'SADMIN'" class="mb-1">
+                        <div class="mdi mdi-eye-off"></div>
+                        </h2>
+                        <p>Tổng doanh thu</p>
+                        <span class="mdi mdi-currency-usd"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-8 col-md-12 p-b-15">
+                <!-- Sales Graph -->
+                <div id="user-acquisition" class="card card-default">
+                    <div class="card-header">
+                        <h2>Đơn Hàng Đã Bán</h2>
+                    </div>
+                    <div class="card-body">
+                        
+                        <div class="tab-content pt-4" id="salesReport">
+                            <div class="tab-pane fade show active" id="source-medium" role="tabpanel">
+                                <div class="mb-6" style="max-height:247px">
+                                    <canvas id="acquisition" class="chartjs2"></canvas>
+                                    <div id="acqLegend" class="customLegend mb-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex flex-wrap bg-white border-top">
+                       <a th:href="@{/tco-admin/statistics/ordersSold}" class="text-uppercase py-3">Chi tiết</a>
+                   </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-12 p-b-15">
+                <!-- Doughnut Chart -->
+                <div class="card card-default">
+                    <div class="card-header justify-content-center">
+                        <h2>Đơn Hàng Trong Tháng</h2>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="doChart"></canvas>
+                    </div>
+                    
+                    <div class="card-footer d-flex flex-wrap bg-white p-0">
+                        <div class="col-6">
+                            <div class="p-20">
+                                <ul class="d-flex flex-column justify-content-between">
+                                    <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+                                            style="color: #4c84ff"></i>Chờ xác nhận</li>
+                                    <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+                                            style="color: #ffa128"></i>Chuẩn bị giao</li>
+                                    <li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+                                            style="color: #7be6ff"></i>Đã xuất kho</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-6 border-left">
+                            <div class="p-20">
+                                <ul class="d-flex flex-column justify-content-between">
+                                    <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+                                            style="color: #8061ef"></i>Đang vận chuyển</li>
+                                    <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+                                            style="color: #80e1c1"></i>Đã giao hàng</li>
+                                    <li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+                                            style="color: #ff7b7b "></i>Huỷ bỏ</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex flex-wrap bg-white border-top">
+                        <a th:href="@{/tco-admin/statistics/orderStatus}" class="text-uppercase py-3">Chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-8 col-md-12 p-b-15">
+                <!-- User activity statistics -->
+                <div class="card card-default" id="user-activity">
+                    <div class="no-gutters">
+                        <div>
+                            <div class="card-header justify-content-between">
+                                <h2>Doanh Thu (VNĐ)</h2>
+                                
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content" id="userActivityContent">
+                                    <div class="tab-pane fade show active" id="user" role="tabpanel">
+                                        <canvas id="activity" class="chartjs"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex flex-wrap bg-white border-top">
+                                <a th:href="@{/tco-admin/statistics/turnover}" class="text-uppercase py-3">Chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-12 p-b-15">
+                <div class="card card-default">
+                    <div class="card-header flex-column align-items-start">
+                        <h2>Người đăng ký</h2>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="currentUser" class="chartjs"></canvas>
+                    </div>
+                    <div class="card-footer d-flex flex-wrap bg-white border-top">
+                        <a th:href="@{/tco-admin/statistics/usersRegistered}" class="text-uppercase py-3">Chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-8 col-12 p-b-15">
+                <!-- World Chart -->
+                <div class="card card-default" id="analytics-country">
+                    <!-- Banner -->
+                <img th:src="@{/images/banner/quangcao2.png}" alt="">
+                </div>
+            </div>
+            <div class="col-xl-4 col-12 p-b-15">
+                <!-- Top Sell Table -->
+                <div class="card card-default Sold-card-table">
+                    <div class="card-header justify-content-between">
+                        <h2>Sản phẩm phổ biến</h2>                       
+                    </div>
+                    <div class="card-body py-0 compact-units" data-simplebar style="height: 534px;">
+                        <table class="table ">
+                            <tbody>
+                                <tr ng-repeat = "turnoverDR in turnoverDetailReport | orderBy: quantity">
+                                    <td class="text-dark">
+                                    	<a th:href="@{|/tco-admin/product/detail/{{turnoverDR.id}}|}">{{turnoverDR.productName}}</a>
+                                    </td>
+                                    <td class="text-center">{{turnoverDR.quantity}}</td>                                    
+                                </tr>                               
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="card-footer d-flex flex-wrap bg-white">
+                        <a th:href="@{/tco-admin/statistics/turnover}" class="text-uppercase py-3">Chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 p-b-15">
+                <!-- Recent Order Table -->
+                <div class="card card-table-border-none card-default recent-orders" id="recent-orders">
+                    <div class="card-header justify-content-between">
+                        <h2>Đơn hàng mới</h2>                       
+                    </div>
+                    <div class="card-body pt-0 pb-5">
+                        <table class="table card-table table-responsive table-responsive-large"
+                            style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn hàng</th>
+                                    <th>Khách hàng</th>
+                                    <th>Sản phẩm</th>
+                                    <th class="d-none d-lg-table-cell">Số lượng</th>
+                                    <th class="d-none d-lg-table-cell">Ngày đặt</th>
+                                    <th class="d-none d-lg-table-cell">Giá</th>
+                                    <th>Trạng thái</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>                                
+                                <tr ng-repeat = "order in top5Orders">
+                                    <td>{{order.id}}</td>
+                                    <td>
+                                        {{order.user.username}}
+                                    </td>
+                                    <td class="d-none d-lg-table-cell">                            
+                                    	<a ng-repeat="orderDetail in top5OrdersDetail" ng-if="orderDetail.order.id == order.id" th:href="@{|/tco-admin/product/detail/{{orderDetail.product.id}}|}">{{orderDetail.product.name}}<br></a>
+                                    </td>
+                                    <td class="d-none d-lg-table-cell">
+                                    	<span ng-repeat="orderDetail in top5OrdersDetail" ng-if="orderDetail.order.id == order.id">{{orderDetail.quantity}}<br></span>
+                                    </td>
+                                    <td class="d-none d-lg-table-cell">{{order.createDate | date:'dd/MM/yyyy'}}</td>
+                                    <td>
+                                        <span ng-repeat="orderDetail in top5OrdersDetail" ng-if="orderDetail.order.id == order.id">{{orderDetail.price | currency:'':0}} VND<br></span>
+                                    </td>
+                                    <td>
+                                    	<span ng-if="order.status == 'ChoXacNhan'"> Chờ xác nhận </span>
+                                        <span ng-if="order.status == 'ChuanBi'"> Chuẩn bị hàng </span>
+                                        <span ng-if="order.status == 'DaGiaoHang'"> Đã Giao </span>
+                                        <span ng-if="order.status == 'HuyBo'"> Huỷ đơn </span>
+                                        <span ng-if="order.status == 'VanChuyen'"> Đang vận chuyển </span>
+                                        <span ng-if="order.status == 'XuatKho'"> Đã xuất kho </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-5">
+                <!-- New Customers -->
+                <div class="card ec-cust-card card-table-border-none card-default">
+                    <div class="card-header justify-content-between ">
+                        <h2>Khách hàng mới</h2>                       
+                    </div>
+                    <div class="card-body pt-0 pb-15px">
+                        <table class="table ">
+                            <tbody>
+                                <tr ng-repeat="user in top6NewUsers">
+                                    <td>
+                                        <div class="media">
+                                            <div class="media-image mr-3 rounded-circle">                                                                                                   
+                                            </div>
+                                            <div class="media-body align-self-center">
+                                                <a th:href="@{/tco-admin/user/{{user.username}}}">
+                                                    <h6 class="mt-0 text-dark font-weight-medium" ng-if="user.fullname != null"> {{user.fullname}}</h6>
+                                                    <h6 class="mt-0 text-dark font-weight-medium" ng-if="user.fullname == null"> {{user.username}}</h6>
+                                                </a>
+                                                <small>@{{user.username}}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{user.createDate | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{user.email}}</td>
+                                </tr>                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-7">
+                <!-- Top Products -->
+                <div class="card card-default ec-card-top-prod">
+                    <div class="card-header justify-content-between">
+                        <h2>Sản phẩm bán chạy</h2>                       
+                    </div>
+                    <div class="card-body mt-10px mb-10px py-0">                                               
+                        <div class="row media d-flex pt-15px pb-15px" ng-repeat = "productBS in productBestSold">
+                            <div class="col-lg-3 col-md-3 col-2 media-image align-self-center rounded">
+                                <img th:src="@{|/images/products/{{productBS.image1}}|}"
+                                        alt="customer image">
+                            </div>
+                            <div class="col-lg-9 col-md-9 col-10 media-body align-self-center ec-pos">
+                                <a th:href="@{|/tco-admin/product/detail/{{productBS.id}}|}">
+                                    <h6 class="mb-10px text-dark font-weight-medium">{{productBS.name}}</h6>
+                                </a>
+                                <p class="float-md-right sale"><span class="mr-2" ng-repeat="tp in topProduct" ng-if="tp.id == productBS.id">Đã bán: {{tp.sold}}</span></p>
+                                <p class="d-none d-md-block">{{productBS.description}}</p>
+                                <p class="mb-0 ec-price">
+                                    <span class="text-dark">{{productBS.price * ((100 - productBS.discount)/100) | currency:'':0}} VND</span>
+                                    <del>{{productBS.price | currency:'':0}} VND</del>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End Content -->
+</div> <!-- End Content Wrapper -->
+
+
+
+</main>   
+</body>
+</html>

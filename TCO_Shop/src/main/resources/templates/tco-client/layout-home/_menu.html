@@ -1,0 +1,225 @@
+<div xmlns:th="http://www.thymeleaf.org">
+
+	<!-- EC Main Menu Start -->
+	<div id="ec-main-menu-desk" class="sticky-nav">
+		<div class="container position-relative">
+			<div class="row">
+				<div class="col ec-category-block">
+					<div class="ec-cat-menu">
+						<div class="ec-category-toggle">
+							<span class="ec-category-icon"></span> <span class="ec-category-title">Tất cả các danh
+								mục</span>
+						</div>
+						<div class="ec-category-content">
+							<div id="ec-category-menu" class="ec-category-menu">
+								<ul class="ec-category-wrapper">
+									<li th:each="category:${categories}">
+										<img th:src="@{|/images/category/${category.icon}|}" style="width: 20px"> <a
+											th:href="@{|/product/list?cid=${category.id}|}">[[${category.name}]]</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col ec-main-menu-block align-self-center d-none d-lg-block p-0">
+					<div class="ec-main-menu">
+						<ul>
+							<li class="dropdown"><a th:href="@{/home}">Trang
+									chủ</a>
+								
+							</li>
+							<li class="dropdown"><span class="main-label-note-new" data-toggle="tooltip"
+									title="NEW"></span><a href="javascript:void(0)">Danh mục</a>
+								<ul class="sub-menu" style="width:250px;">
+									<li th:each="category : ${categories}" class="dropdown position-static">
+										<a th:href="@{|/product/list?cid=${category.id}|}"><img
+												th:src="@{|/images/category/${category.icon}|}"
+												style="width: 20px; margin-right: 10px;">[[${category.name}]] <i
+												class="ecicon eci-angle-right"></i></a>
+										<ul class="sub-menu sub-menu-child" style="width: 60%;">
+											<li th:each="subcategory : ${category.subcategories}"> <a
+													th:href="@{|/product/list?scid=${subcategory.id}|}"><img
+														th:src="@{|/images/subcategory/${subcategory.icon}|}"
+														style="width: 30px;">[[${subcategory.name}]]</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown"><a th:href="@{|/product/list|}">Sản
+									phẩm</a>
+							</li>
+							<li class="dropdown"><a th:href="@{/about-us}" }>About Us</a></li>
+							<li class="dropdown"><span class="main-label-note-new" data-toggle="tooltip"
+									title="NEW"></span><a th:href="@{|/blog|}">Blog</a>
+							</li>
+							<li class="dropdown"><a th:href="@{|/faq|}">FAQ</a>
+							</li>
+							<li class="dropdown"><a th:href="@{|/error-page|}">Tổng hợp</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col ec-spe-offer-block">
+					<div class="ec-spe-offer-link">
+						<a th:href="@{|/offer|}" class="ec-spe-offer-title">Ưu đãi đặc
+							biệt</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Ec Main Menu End -->
+	<!-- tco Menu Start -->
+	<div id="ec-mobile-menu" class="ec-side-cart ec-mobile-menu">
+		<div class="ec-menu-title">
+			<span class="menu_title">Menu của tôi</span>
+			<button class="ec-close">×</button>
+		</div>
+		<div class="ec-menu-inner">
+			<div class="ec-menu-content">
+				<ul>
+					<li class="dropdown"><a th:href="@{/home}">Trang
+							chủ</a>
+					
+					</li>
+					<li class="dropdown"><span class="main-label-note-new" data-toggle="tooltip"
+							title="NEW"></span><a href="javascript:void(0)">Danh mục</a>
+						<ul class="sub-menu" style="width:250px;">
+							<li th:each="category : ${categories}" class="dropdown position-static">
+								<a th:href="@{|/product/list?cid=${category.id}|}"><img
+										th:src="@{|/images/category/${category.icon}|}"
+										style="width: 20px; margin-right: 10px;">[[${category.name}]] <i
+										class="ecicon eci-angle-right"></i></a>
+								<ul class="sub-menu sub-menu-child" style="width: 60%;">
+									<li th:each="subcategory : ${category.subcategories}"> <a
+											th:href="@{|/product/list?scid=${subcategory.id}|}"><img
+												th:src="@{|/images/subcategory/${subcategory.icon}|}"
+												style="width: 30px;">[[${subcategory.name}]]</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown"><a th:href="@{|/product/list|}">Sản
+							phẩm</a>
+					</li>
+					<li class="dropdown"><a th:href="@{/about-us}" }>About Us</a></li>
+					<li class="dropdown"><span class="main-label-note-new" data-toggle="tooltip"
+							title="NEW"></span><a th:href="@{|/blog|}">Blog</a>
+					</li>
+					<li class="dropdown"><a th:href="@{|/faq|}">FAQ</a>
+					</li>
+					<li class="dropdown"><a th:href="@{|/error-page|}">Tổng hợp</a>
+					</li>
+				</ul>
+			</div>
+			<div class="header-res-lan-curr">
+				<div class="header-top-lan-curr">
+					<!-- Language Start -->
+					<div class="header-top-lan dropdown">
+						<button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">
+							Ngôn ngữ <i class="ecicon eci-caret-down" aria-hidden="true"></i>
+						</button>
+						<ul class="dropdown-menu">
+							<li class="active"><a class="dropdown-item" href="#">English</a></li>
+							<li><a class="dropdown-item" href="#">Italiano</a></li>
+						</ul>
+					</div>
+					<!-- Language End -->
+					<!-- Currency Start -->
+					<div class="header-top-curr dropdown">
+						<button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">
+							Currency <i class="ecicon eci-caret-down" aria-hidden="true"></i>
+						</button>
+						<ul class="dropdown-menu">
+							<li class="active"><a class="dropdown-item" href="#">USD
+									$</a></li>
+							<li><a class="dropdown-item" href="#">EUR €</a></li>
+						</ul>
+					</div>
+					<!-- Currency End -->
+				</div>
+				<!-- Social Start -->
+				<div class="header-res-social">
+					<div class="header-top-social">
+						<ul class="mb-0">
+							<li class="list-inline-item"><a href="https://www.facebook.com/tcoshopp"><i
+										class="ecicon eci-facebook"></i></a></li>
+							<li class="list-inline-item"><a href="#"><i class="ecicon eci-twitter"></i></a></li>
+							<li class="list-inline-item"><a href="#"><i class="ecicon eci-instagram"></i></a></li>
+							<li class="list-inline-item"><a href="#"><i class="ecicon eci-linkedin"></i></a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- Social End -->
+			</div>
+		</div>
+	</div>
+	<!-- tco Menu End -->
+	<!-- tco Cart Start -->
+	<div class="ec-side-cart-overlay"></div>
+	<div id="ec-side-cart" class="ec-side-cart">
+		<div class="ec-cart-inner">
+			<div class="ec-cart-top">
+				<div class="ec-cart-title">
+					<span class="cart_title">Giỏ hàng của tôi</span>
+					<button class="ec-close">×</button>
+				</div>
+				<ul class="eccart-pro-items" ng-if="cart.count > 0" ng-repeat="item in cart.items">
+					<li>
+						<a th:href="@{|/product/detail/{{item.id}}|}" class="sidecart_pro_img"><img
+								th:src="@{|/images/products/{{item.image1}}|}" alt="product"></a>
+						<div class="ec-pro-content">
+							<a th:href="@{|/product/detail/{{item.id}}|}" class="cart_pro_title">{{item.name}}</a>
+							<span class="cart-price"><span>{{item.price * (100 - item.discount)/100 | currency:'':0}}
+									VNĐ</span> x {{item.qty}}</span>
+							<div class="qty-plus-minus">
+								<input class="qty-input" ng-change="cart.saveToSessionStorage()" ng-model="item.qty"
+									type="number" min="1">
+							</div>
+							<a href="#" class="remove" th:attr="ng-click=@{|cart.remove(item.id)|}">×</a>
+						</div>
+					</li>
+				</ul>
+				<ul class="eccart-pro-items" ng-if="cart.count == 0">
+					<li>
+						<div class="ec-pro-content">
+							Bạn chưa có sản phẩm
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="ec-cart-bottom">
+				<div class="cart-sub-total">
+					<table class="table cart-table">
+						<tbody>
+							<tr>
+								<td class="text-left">Tổng phụ :</td>
+								<td class="text-right">{{cart.amount | currency:'':0}} VNĐ</td>
+							</tr>
+							<tr>
+								<td class="text-left">Phí ship :</td>
+								<td class="text-right" ng-if="cart.ship == 0 && cart.count > 0">Miễn phí</td>
+								<td class="text-right" ng-if="cart.ship == 0 && cart.count == 0">{{cart.ship |
+									currency:'':0}} VNĐ</td>
+								<td class="text-right" ng-if="cart.ship > 0">{{cart.ship | currency:'':0}} VNĐ</td>
+							</tr>
+							<tr>
+								<td class="text-left">Tất cả:</td>
+								<td class="text-right primary-color">{{cart.amount+cart.ship | currency:'':0}} VNĐ</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="cart_btn">
+					<a th:href="@{|/cart|}" class="btn btn-primary">Xem giỏ hàng</a>
+					<button ng-if="cart.count == 0" class="btn btn-secondary" disabled
+						style="border-radius: 20px;">Thanh toán</button>
+					<a ng-if="cart.count > 0" th:href="@{|/checkout|}" class="btn btn-secondary">Thanh toán</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- tco Cart End -->
+
+</div>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+th:replace="~{tco-client/layout-client/index :: dynamic(~{::main})}">
+<body>
+<main ng-controller="product-ctrl">
+
+<!-- Ec breadcrumb start -->
+<div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row ec_breadcrumb_inner">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="ec-breadcrumb-title">Cửa hàng</h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <!-- ec-breadcrumb-list start -->
+                        <ul class="ec-breadcrumb-list">
+                            <li class="ec-breadcrumb-item"><a th:href="@{/home}">Trang chủ</a></li>
+                            <li class="ec-breadcrumb-item active">Cửa hàng</li>
+                        </ul>
+                        <!-- ec-breadcrumb-list end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ec breadcrumb end -->
+
+<!-- Page detail section -->
+<section class="ec-bnr-detail margin-bottom-30 section-space-pt">
+    <div class="ec-page-detail">
+        <div class="container">
+            <div class="ec-main-heading d-none">
+                <h2>Shop <span>Detail</span></h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="ec-cat-bnr">
+                        <a href="product-left-sidebar.html"><span></span></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="ec-page-description">
+                        <h6>Ưu đãi tốt nhất cho các thương hiệu hàng đầu</h6>
+                        <p class="m-0">Mô tả
+                        <p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End detail section -->
+
+<!-- Sart Shop -->
+<section class="ec-page-content-bnr section-space-pb">
+    <div class="container">
+        <div class="row">
+            <div class="ec-shop-rightside col-lg-12 col-md-12">
+                <!-- Shop Top Start -->
+                <div class="ec-pro-list-top d-flex">
+                    <div class="col-md-6 ec-grid-list">
+                        <div class="ec-gl-btn">
+                            <button class="btn sidebar-toggle-icon">
+                            	<img th:src="@{|/assets/images/icons/filter.svg|}" class="svg_img gl_svg" alt="filter" /></button>
+                            <button class="btn btn-grid-50 active">
+                            	<img th:src="@{|/assets/images/icons/grid.svg|}" class="svg_img gl_svg" alt="grid" /></button>
+                            <button class="btn btn-list-50">
+                            	<img th:src="@{|/assets/images/icons/list.svg|}" class="svg_img gl_svg" alt="list" /></button>
+                        </div>
+                    </div>                  
+                </div>
+                <!-- Shop Top End -->
+
+                <!-- Shop content Start -->
+                <div class="shop-pro-content">
+                    <div class="shop-pro-inner">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content" ng-repeat="product in products | filter: minPriceFilter | filter: maxPriceFilter | startFrom: currentPage*pageSize | limitTo: pageSize">
+                                <div class="ec-product-inner">
+                                    <div class="ec-pro-image-outer">
+                                        <div class="ec-pro-image">
+                                            <a href="product-left-sidebar.html" class="image">
+                                                <img class="main-image"
+                                                    th:src="@{|/images/products/{{product.image1}}|}" alt="Product" />
+                                                <img class="hover-image"
+                                                    th:src="@{|/images/products/{{product.image2}}|}" alt="Product" />
+                                            </a>
+                                            <span class="percentage" ng-if="product.discount > 0">{{product.discount}} %<</span>
+                                            <div class="ec-pro-actions">
+                                                <div ng-if="product.stock > 0">
+                                            		 <a title="Add To Cart" class=" add-to-cart" th:attr="ng-click=@{|cart.add(product.id)|}"><img
+                                                        th:src="@{|/assets/images/icons/cart.svg|}"  class="svg_img pro_svg"
+                                                        alt="" /> Add To Cart</a>
+                                         		</div>
+                                         	    	<div ng-if="product.stock == 0">
+                                            		<button title="Hết hàng" class=" add-to-cart"><img
+                                                        th:src="@{|/assets/images/icons/clear-shopping-cart.png|}"  class="svg_img pro_svg"
+                                                        alt="" /> Hết hàng</button>
+                                         		</div>   
+                                         		<th:block th:if="${#request.remoteUser}">
+                                                		<a ng-if="product.isFavorite == undefined"  ng-click="addFavorite(product.id)" class="ec-btn-group wishlist" title="Wishlist"><img
+                                                            th:src="@{/assets/images/icons/pro_wishlist.svg}"
+                                                            class="svg_img pro_svg" alt="" /></a>
+                                                        <a ng-if="product.isFavorite == true" ng-click="removeFavorite(product.favoriteId)" class="ec-btn-group wishlist" title="Wishlist">
+                                                        <img
+                                                            th:src="@{/assets/images/icons/remove-from-wishlist-icon.svg}"
+                                                            class="svg_img pro_svg" alt="" /></a>
+                                                </th:block>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ec-pro-content">
+                                        <h5 class="ec-pro-title"><a th:href="@{|/product/detail/{{product.id}}|}">{{product.name}}</a></h5>
+                                        <div class="ec-pro-list-desc">{{product.description}}</div>
+                                        
+                                        
+                                        <span class="ec-price" ng-if="product.discount != 0">
+                                            <span class="old-price">{{product.price | currency:'':0}} VNĐ</span>
+                                            <span class="new-price">{{product.price * (100 - product.discount) / 100 | currency:'':0}} VNĐ</span>
+                                        </span>
+                                        <span class="ec-price" ng-if="product.discount == 0">
+                                            <span class="new-price">{{product.price | currency:'':0}} VNĐ</span>                                    
+                                        </span>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ec Pagination Start -->
+                    <center>
+                     <div class="ec-pro-pagination" style="display:block ; margin: 0 auto; width: 30%;">
+                        <button ng-click = "pagination()" class="btn btn-danger">
+								<b> | &lt</b>
+							</button>
+							<button ng-disabled="currentPage == 0"
+								ng-click="currentPage=currentPage - 1" class="btn btn-primary">
+								<b>&lt &lt</b>
+							</button>
+							<button
+								class="btn btn-success">{{currentPage+1}}/{{numberOfPages()}}</button>
+							<button ng-disabled="currentPage >= products.length/pageSize - 1"
+								ng-click="currentPage=currentPage+1" class="btn btn-primary">
+								<b>> ></b>
+							</button>
+							<button ng-click = "currentPage = numberOfPages() -1" class="btn btn-danger">
+								<b>> |</b>
+							</button>
+                    </div>
+                </center>
+                    <!-- Ec Pagination End -->
+                </div>
+                <!--Shop content End -->
+            </div>
+            <!-- Sidebar Area Start -->
+            <div class="filter-sidebar-overlay"></div>
+            <div class="ec-shop-leftside filter-sidebar">
+                <div class="ec-sidebar-heading">
+                    <h1>Lọc sản phẩm</h1>
+                    <a class="filter-cls-btn" href="javascript:void(0)">×</a>
+                </div>
+                <div class="ec-sidebar-wrap">
+                    <!-- Sidebar Category Block -->
+                    <div class="ec-sidebar-block">
+                        <div class="ec-sb-title">
+                            <h3 class="ec-sidebar-title">Danh mục</h3>
+                        </div>
+                        <div class="ec-sb-block-content">
+                            <ul>
+                                <li ng-repeat="category in categories">
+                                    <div class="ec-sidebar-block-item">
+                                     <input name="categoryFilterCheckboxes" type="checkbox" ng-click="selectCategory(category.id)" ng-value="category.id"/> <a href="#">{{category.name}}</a><span
+                                            class="checked"></span>
+                                    </div>
+                                </li>                                                                                                                                                                                                              
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="ec-sidebar-block">
+                        <div class="ec-sb-title">
+                            <h3 class="ec-sidebar-title">Giá</h3>
+                        </div>
+                        <div class="ec-sb-block-content es-price-slider">
+                            <div class="ec-price-filter">
+                                <div id="ec-sliderPrice" class="filter__slider-price" data-min="0" data-max="250"
+                                    data-step="10"></div>
+                                <div class="ec-price-input">
+                                    <label class="filter__label"><input type="number" ng-model="fromPrice" class="filter__input"></label>
+                                    <span class="ec-price-divider"></span>
+                                    <label class="filter__label"><input type="number" ng-model="toPrice" class="filter__input"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ec-sidebar-title" style="margin: 10px 40%;">
+                            <button class="button-popup" ng-click="deleteFilter()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Shop -->
+</main>   
+</body>
+</html>

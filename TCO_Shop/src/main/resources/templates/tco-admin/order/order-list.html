@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{tco-admin/layout-admin/index :: dynamic(~{::main})}">
+
+<body>
+	<main ng-controller="order-ctrl">
+
+		<!-- CONTENT WRAPPER -->
+		<div class="ec-content-wrapper">
+			<div class="content">
+				<div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
+					<div>
+						<h1>Đơn hàng</h1>
+						<p class="breadcrumbs">
+							<span><a th:href="@{/tco-admin}">Bảng điều khiển</a></span> <span><i
+									class="mdi mdi-chevron-right"></i></span>Đơn hàng
+						</p>
+					</div>
+					<div>
+						<a th:href="@{/tco-admin/product/add}" class="btn btn-primary"> Danh sách đơn đặt hàng</a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="card card-default">
+							<div class="card-header card-header-border-bottom d-flex justify-content-between">
+								<div class="card-bar">
+									<div class="col-lg-3 col-md-6">
+										<label>Hiển thị: </label>
+										<select class="form-control" ng-change="pagination()" ng-model="pageSize">
+											<option value="5">5</option>
+											<option value="10">10</option>
+											<option value="20">20</option>
+										</select>
+									</div>
+									<div class="col-lg-9 col-md-12 sort">
+										<div class="col-lg-4 col-md-6 p-space">
+											<label for="">Tìm kiếm</label>
+											<input class="form-control" type="text" ng-model="orderSearch"
+												placeholder="Tìm kiếm">
+										</div>
+										<div class="col-lg-4 col-md-6 p-space">
+											<label for="sortProduct">Bộ lọc</label>
+											<select class="form-control" ng-change="sort()" ng-model="orderProperty">
+												<option value="id">Mã đơn hàng ↑</option>
+												<option value="-id">Mã đơn hàng ↓</option>
+												<option value="createDate">Ngày đặt ↑</option>
+												<option value="-createDate">Ngày đặt ↓</option>
+												<option value="status">Trạng thái ↑</option>
+												<option value="-status">Trạng thái ↓</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div>
+								<h6>Tổng đơn đặt: {{totalQuantity()}}</h6>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<div class="card card-default">
+										<div class="card-body">
+
+											<table class="table" style="width: 100%">
+												<thead>
+													<tr>
+														<th>Mã đơn hàng</th>
+														<th>Người mua</th>
+														<th>Ngày đặt</th>
+														<th>Số điện thoại</th>
+														<th>Địa chỉ</th>
+														<th>Trạng thái</th>
+														<th>Thanh toán</th>
+														<th>Huỷ đơn</th>
+														<th>Tuỳ chỉnh</th>
+													</tr>
+												</thead>
+												<!-- cái bảng này đang bị search ngu -->
+												<tbody>
+													<tr
+														ng-repeat="order in orders | filter: orderSearch | orderBy: orderProperty | startFrom: currentPage*pageSize | limitTo: pageSize">
+														<td>{{order.id}}</td>
+														<td>{{order.user.username}}</td>
+														<td>{{order.createDate | date:'dd/MM/yyyy'}} at {{order.orderTimeDetail}}</td>
+														<td>{{order.phoneNumber}}</td>
+														<td>{{order.address}}</td>
+														<td>
+															<span ng-if="order.status == 'HuyBo'">Đã huỷ đơn</span>
+															<select ng-if="order.status != 'HuyBo'" style="border: 0px;" ng-model="order.status"
+																ng-change="updateOrderStatus(order)">
+																<option ng-repeat="os in orderStatus" ng-value="os.id" ng-if="os.id != 'HuyBo'">
+																	{{os.statusName}}</option>
+															</select>
+														</td>
+														<td>
+															<span ng-if="order.isPaid == 1">Chưa thanh toán</span>
+															<span ng-if="order.isPaid == 2">Đã thanh toán</span>
+															<span ng-if="order.isPaid == 3">Đã hoàn tiền</span>
+														</td>
+														<td>
+															<div class="btn-group mb-1">
+																<a ng-if="order.status != 'HuyBo'" type="button" ng-click="adminCancelOrder(order)"
+																	class="btn btn-outline-success"
+																>Huỷ đơn</a>
+																<button class="btn btn-outline-success" ng-if="order.status == 'HuyBo'" disabled="disabled">Huỷ đơn</button>
+															</div>
+														</td>
+														<td>
+															<div class="btn-group mb-1">
+																<a type="button" ng-click="findOrderDetails(order.id)"
+																	class="btn btn-outline-success"
+																	data-bs-toggle="modal"
+																	data-bs-target="#exampleModal">Xem chi
+																	tiết</a>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+											<div class="panel-footer text-center">
+												<button ng-click="pagination()" class="btn btn-danger">
+													<b>Trang đầu</b>
+												</button>
+												<button ng-disabled="currentPage == 0"
+													ng-click="currentPage=currentPage - 1" class="btn btn-primary">
+													<b>Trước</b>
+												</button>
+												<button
+													class="btn btn-success">{{currentPage+1}}/{{numberOfPages()}}</button>
+												<button ng-disabled="currentPage >= orders.length/pageSize - 1"
+													ng-click="currentPage=currentPage+1" class="btn btn-primary">
+													<b>Tới</b>
+												</button>
+												<button ng-click="currentPage = numberOfPages() -1"
+													class="btn btn-danger">
+													<b>Trang cuối</b>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- MODAL -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" style="margin: 5% 20%; display: block;">
+                            <div class="modal-content" style="width: 200%;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Chi tiết hoá đơn</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+										<div class="col-12">
+											<div class="card card-default">
+												<div class="card-body">
+													<table class="table" style="width: 100%">
+														<thead>
+															<tr>
+																<th>Sản phẩm</th>
+																<th>Giá gốc</th>
+																<th>Giảm giá</th>
+																<th>Số lượng</th>
+																<th>Thành tiền</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr ng-repeat="orderDetail in orderDetails">
+																<td>{{orderDetail.product.name}}</td>
+																<td>{{orderDetail.product.price | currency:'':0}} VNĐ</td>
+																<td>{{orderDetail.product.discount}} %</td>
+																<td>{{orderDetail.quantity}}</td>
+																<td>{{orderDetail.price| currency:'':0}} VNĐ</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<p>Ghi chú: {{orderDetails[0].order.description}}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				
+			</div>
+			<!-- End Content -->
+		</div>
+		<!-- End Content Wrapper -->
+
+
+	</main>
+</body>
+
+</html>

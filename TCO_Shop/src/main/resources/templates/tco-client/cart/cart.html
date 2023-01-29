@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+th:replace="~{tco-client/layout-client/index :: dynamic(~{::main})}">
+<body>
+<main>
+<!-- Ec breadcrumb start -->
+<div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row ec_breadcrumb_inner">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="ec-breadcrumb-title">Giỏ hàng</h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <!-- ec-breadcrumb-list start -->
+                        <ul class="ec-breadcrumb-list">
+                            <li class="ec-breadcrumb-item"><a th:href="@{|/home|}">Trang chủ</a></li>
+                            <li class="ec-breadcrumb-item active">Giỏ hàng</li>
+                        </ul>
+                        <!-- ec-breadcrumb-list end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ec breadcrumb end -->
+
+<!-- Ec cart page -->
+<section class="ec-page-content section-space-p">
+    <div class="container">
+        <div class="row">
+            <div class="ec-cart-leftside col-lg-8 col-md-12 ">
+                <!-- cart content Start -->
+                <div class="ec-cart-content">
+                    <div class="ec-cart-inner">
+                        <div class="row">
+                            <form action="#">
+                                <div class="table-content cart-table-content">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Sản phẩm</th>
+                                                <th>Giá</th>
+                                                <th style="text-align: center;">Số lượng</th>
+                                                <th>Tổng cộng</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        	<tr ng-if="cart.count == 0">
+                                        		<td colspan="4" style="text-align: center;">Bạn chưa có sản phẩm trong giỏ hàng</td>
+                                        	</tr>
+                                            <tr ng-if="cart.count > 0" ng-repeat="item in cart.items">
+                                                <td data-label="Product" class="ec-cart-pro-name">
+                                                	<a th:href="@{|/product/detail/{{item.id}}|}">
+                                                		<img class="ec-cart-pro-img mr-4" th:src="@{|/images/products/{{item.image1}}|}" alt="" />{{item.name}}</a>
+                                                </td>
+                                                <td data-label="Price" class="ec-cart-pro-price">
+                                                	<span class="amount">{{item.price * (100 - item.discount)/100 | currency:'':0}} VNĐ</span>
+                                                </td>
+                                                <td data-label="Quantity" class="ec-cart-pro-qty"
+                                                    style="text-align: center;">
+                                                    <div class="cart-qty-plus-minus-new">
+                                                        <input class="cart-plus-minus"
+                                                            name="cartqtybutton" ng-change="cart.saveToSessionStorage()" ng-model="item.qty" type="number" min="1"/>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Total" class="ec-cart-pro-subtotal">{{item.qty * item.price * (100 - item.discount)/100 | currency:'':0}} VNĐ</td>
+                                                <td data-label="Remove" class="ec-cart-pro-remove" th:attr="ng-click=@{|cart.remove(item.id)|}">
+                                                    <a href="#"><i class="ecicon eci-trash-o"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ec-cart-update-bottom">
+                                            <a class="text-decoration-none" th:href="@{|/product/list|}">Tiếp tục mua hàng</a>
+                                            <button ng-if="cart.count == 0" class="btn btn-primary text-decoration-none" disabled>Thanh toán</button>
+                                            <a ng-if="cart.count > 0" class="btn btn-primary text-decoration-none" th:href="@{|/checkout|}">Thanh toán</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--cart content End -->
+            </div>
+            <!-- Sidebar Area Start -->
+            <div class="ec-cart-rightside col-lg-4 col-md-12">
+                <div class="ec-sidebar-wrap">
+                    <!-- Sidebar Summary Block -->
+                    <div class="ec-sidebar-block">
+                        <div class="ec-sb-title">
+                            <h3 class="ec-sidebar-title">Chi tiết đơn hàng</h3>
+                        </div>
+                        <div class="ec-sb-block-content">
+                            <div class="ec-cart-summary-bottom">
+                                <div class="ec-cart-summary">
+                                    <div>
+                                        <span class="text-left">Tổng số</span>
+                                        <span class="text-right">{{cart.amount | currency:'':0}} VNĐ</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-left">Phí vận chuyển</span>
+                                        <span class="text-right" ng-if="cart.ship == 0 && cart.count > 0">Miễn phí vận chuyển</span>
+                                        <span class="text-right" ng-if="cart.ship == 0 && cart.count == 0">{{cart.ship | currency:'':0}} VNĐ</span>
+                                        <span class="text-right" ng-if="cart.ship > 0">{{cart.ship | currency:'':0}} VNĐ</span>
+                                    </div>
+                                   
+                                    <div class="ec-cart-coupan-content">
+                                        <form class="ec-cart-coupan-form" name="ec-cart-coupan-form" method="post"
+                                            action="#">
+                                            <input class="ec-coupan" type="text" required=""
+                                                placeholder="Enter Your Coupan Code" name="ec-coupan" value="">
+                                            <button class="ec-coupan-btn button btn-primary" type="submit"
+                                                name="subscribe" value="">Apply</button>
+                                        </form>
+                                    </div>
+                                    <div class="ec-cart-summary-total">
+                                        <span class="text-left">Tổng cộng</span>
+                                        <span class="text-right">{{cart.amount+cart.ship | currency:'':0}} VNĐ</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sidebar Summary Block -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- New Product Start -->
+<section class="section ec-new-product section-space-p">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="section-title">
+                    <h2 class="ec-bg-title">New Arrivals</h2>
+                    <h2 class="ec-title">New Arrivals</h2>
+                    <p class="sub-title">Browse The Collection of Top Products</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- New Product Content -->
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content" ng-repeat="item in pager.items | limitTo: 4">
+                <div class="ec-product-inner">
+                    <div class="ec-pro-image-outer">
+                        <div class="ec-pro-image">
+                            <a th:href="@{|/product/detail/{{item.id}}|}" class="image">
+                                <img class="main-image"
+                                    th:src="@{|/images/products/{{item.image1}}|}" alt="Product" />
+                                <img class="hover-image"
+                                    th:src="@{|/images/products/{{item.image2}}|}" alt="Product" />
+                            </a>
+                            <span class="percentage" ng-if="item.discount > 0">{{item.discount}}%</span>
+                            <div class="ec-pro-actions">
+                                <button title="Add To Cart" class=" add-to-cart"><img
+                                        src="assets/images/icons/cart.svg" class="svg_img pro_svg"
+                                        alt="" ng-click="cart.add(item.id)"/> Add To Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ec-pro-content">
+                        <h5 class="ec-pro-title"><a th:href="@{|/product/detail/{{item.id}}|}">{{item.name}}</a></h5>
+                        <span class="ec-price">
+	                          	<span ng-if="item.discount != 0">
+	                          		<span class="old-price">{{item.price | currency:'':0}} VNĐ</span>
+	                          		<span class="new-price">{{item.price * (100 - item.discount)/100 | currency:'':0}} VNĐ</span>
+	                        </span>
+	                        <span ng-if="item.discount == 0">
+	                            	<span class="new-price">{{item.price | currency:'':0}} VNĐ</span>
+	                        </span>                                          
+                       </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 shop-all-btn"><a th:href="@{|/product/list|}">Shop All Collection</a></div>
+        </div>
+    </div>
+</section>
+<!-- New Product end -->
+
+</main>   
+</body>
+</html>

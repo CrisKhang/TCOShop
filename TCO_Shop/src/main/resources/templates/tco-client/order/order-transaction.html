@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+th:replace="~{tco-client/layout-client/index :: dynamic(~{::main})}">
+<body>
+<main>
+
+<!-- Ec breadcrumb start -->
+    <div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row ec_breadcrumb_inner">
+                        <div class="col-md-6 col-sm-12">
+                            <h2 class="ec-breadcrumb-title">Lịch sử thanh toán</h2>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <!-- ec-breadcrumb-list start -->
+                            <ul class="ec-breadcrumb-list">
+                                <li class="ec-breadcrumb-item"><a th:href="@{/home}">Trang chủ</a></li>
+                                <li class="ec-breadcrumb-item active">Lịch sử</li>
+                            </ul>
+                            <!-- ec-breadcrumb-list end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ec breadcrumb end -->
+
+    <!-- User history section -->
+    <section class="ec-page-content ec-vendor-uploads ec-user-account section-space-p">
+        <div class="container">
+            <div class="row">
+                <!-- Sidebar Area Start -->
+                <div class="ec-shop-leftside ec-vendor-sidebar col-lg-3 col-md-12">
+                    <div class="ec-sidebar-wrap">
+                        <!-- Sidebar Category Block -->
+                        <div class="ec-sidebar-block">
+                            <div class="ec-vendor-block">
+                                <div class="ec-vendor-block-items">
+                                    <ul>
+                                        <li><a th:href="@{/user/profile}">Thông tin người dùng</a></li>
+                                        <li><a th:href="@{/order/history}">Lịch sử đặt hàng</a></li>
+                                        <li><a th:href="@{/order/transaction}">Lịch sử thanh toán</a></li>
+                                        <li><a th:href="@{/product/favorites}">Danh sách sản phẩm yêu thích</a></li>
+                                        <li><a th:href="@{/cart}">Giỏ hàng</a></li>
+                                        <li><a th:href="@{/checkout}">Thanh toán</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ec-shop-rightside col-lg-9 col-md-12">
+                    <div class="ec-vendor-dashboard-card">
+                        <div class="ec-vendor-card-header">
+                            <h5>Lịch sử thanh toán</h5>
+                            <div class="ec-header-btn">
+                                <a class="btn btn-lg btn-primary" th:href="@{/product/list}">Shop Now</a>
+                            </div>
+                        </div>
+                        <div class="ec-vendor-card-body">
+                            <div class="ec-vendor-card-table">
+                                <table class="table ec-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Tên</th>
+                                            <th scope="col">Ngân hàng</th>
+                                            <th scope="col">Loại thẻ</th>
+                                            <th scope="col">Mã giao dịch tại ngân hàng</th>
+                                            <th scope="col">Mã giao dịch tại VNPAY</th>
+                                            <th scope="col">Ngày đặt</th>
+                                            <th scope="col">Trạng thái giao dịch</th>
+                                            <th scope="col">Mã hóa đơn</th>
+                                            <th scope="col">Xem đơn</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="trans in transaction">
+                                            <th scope="row"><span>{{trans.id}}</span></th>
+                                            <td><span>{{trans.order.user.fullname}}</span></td>
+                                            <td><span>{{trans.bankCode}}</span></td>
+                                            <td><span>{{trans.cardType}}</span></td>
+                                            <td><span>{{trans.transactionNo}}</span></td>
+                                            <td><span>{{trans.bankTranNo}}</span></td>
+                                            <td><span>{{trans.payDate | date:"dd/MM/yyyy"}} at {{trans.payTime}}</span></td>
+                                            <td><span>{{trans.transactionStatus}}</span></td>
+                                            <td><span>{{trans.order.id}}</span></td>
+                                            <td><span class="tbl-btn"><a class="btn btn-lg btn-primary"
+                                                        th:href="@{|/order/track/{{trans.order.id}}|}">Xem</a></span>
+                                            </td>                                                                                                          
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End User history section -->
+
+
+</main>   
+</body>
+</html>

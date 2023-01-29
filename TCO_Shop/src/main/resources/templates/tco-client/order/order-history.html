@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+th:replace="~{tco-client/layout-client/index :: dynamic(~{::main})}">
+<body>
+<main>
+
+<!-- Ec breadcrumb start -->
+    <div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row ec_breadcrumb_inner">
+                        <div class="col-md-6 col-sm-12">
+                            <h2 class="ec-breadcrumb-title">Lịch sử giao dịch</h2>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <!-- ec-breadcrumb-list start -->
+                            <ul class="ec-breadcrumb-list">
+                                <li class="ec-breadcrumb-item"><a th:href="@{/home}">Trang chủ</a></li>
+                                <li class="ec-breadcrumb-item active">Lịch sử</li>
+                            </ul>
+                            <!-- ec-breadcrumb-list end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ec breadcrumb end -->
+
+    <!-- User history section -->
+    <section class="ec-page-content ec-vendor-uploads ec-user-account section-space-p">
+        <div class="container">
+            <div class="row">
+                <!-- Sidebar Area Start -->
+                <div class="ec-shop-leftside ec-vendor-sidebar col-lg-3 col-md-12">
+                    <div class="ec-sidebar-wrap">
+                        <!-- Sidebar Category Block -->
+                        <div class="ec-sidebar-block">
+                            <div class="ec-vendor-block">
+                                <div class="ec-vendor-block-items">
+                                    <ul>
+                                        <li><a th:href="@{/user/profile}">Thông tin người dùng</a></li>
+                                        <li><a th:href="@{/order/history}">Lịch sử đặt hàng</a></li>
+                                        <li><a th:href="@{/order/transaction}">Lịch sử thanh toán</a></li>
+                                        <li><a th:href="@{/product/favorites}">Danh sách sản phẩm yêu thích</a></li>
+                                        <li><a th:href="@{/cart}">Giỏ hàng</a></li>
+                                        <li><a th:href="@{/checkout}">Thanh toán</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ec-shop-rightside col-lg-9 col-md-12">
+                    <div class="ec-vendor-dashboard-card">
+                        <div class="ec-vendor-card-header">
+                            <h5>Lịch sử đặt hàng</h5>
+                            <div class="ec-header-btn">
+                                <a class="btn btn-lg btn-primary" th:href="@{/product/list}">Shop Now</a>
+                            </div>
+                        </div>
+                        <div class="ec-vendor-card-body">
+                            <div class="ec-vendor-card-table">
+                                <table class="table ec-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Hóa đơn</th>
+                                            <th scope="col">Tên</th>
+                                            <th scope="col">Ngày đặt</th>
+                                            <th scope="col">Thanh toán trước</th>
+                                            <th scope="col">Trạng thái</th>
+                                            <th scope="col">Xem đơn</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in items | orderBy: itemProperty">
+                                            <th scope="row"><span>{{item.id}}</span></th>
+                                            <td ng-if="!item.user.fullname">
+                                            	<span>{{item.user.username}}</span>
+                                            </td>
+                                            <td ng-if="item.user.fullname">
+                                            	<span>[[${currentUser.fullname}]]</span>
+                                            </td>
+                                            <td><span>{{item.createDate | date:"dd/MM/yyyy"}} at {{item.orderTimeDetail}}</span></td>
+                                            <td ng-if="item.isPaid === 1">
+                                            	<span>Chưa thanh toán</span>
+                                            </td>
+                                            <td ng-if="item.isPaid === 2">
+                                            	<span>Đã thanh toán</span>
+                                            </td>
+                                            <td ng-if="item.isPaid === 3">
+                                            	<span>Đã hoàn tiền</span>
+                                            </td>
+                                            <td ng-if="item.status === 'ChoXacNhan'">
+                                            	<span >Chờ xác nhận</span>
+                                            </td>
+                                            <td ng-if="item.status === 'ChuanBi'">
+                                            	<span>Đang chuẩn bị hàng</span>
+                                            </td>
+                                            <td ng-if="item.status === 'XuatKho'">
+                                            	<span>Đã xuất kho</span>
+                                            </td>
+                                            <td ng-if="item.status === 'VanChuyen'">
+                                            	<span>'Đang vận chuyển</span>
+                                            </td>
+                                            <td ng-if="item.status === 'DaGiaoHang'">
+                                            	<span>Đã giao hàng</span>
+                                            </td>
+                                            <td ng-if="item.status === 'HuyBo'">
+                                            	<span>Hủy bỏ</span>
+                                            </td>
+                                            <td><span class="tbl-btn"><a class="btn btn-lg btn-primary"
+                                                        th:href="@{|/order/track/{{item.id}}|}">Xem</a></span></td>                                                        
+                                            <td ng-if="item.status === 'ChoXacNhan' || item.status === 'ChuanBi'">
+	                                            <span class="tbl-btn" >
+	                                            	<button class="btn btn-lg btn-warning" ng-click="cancelOrder(item.id)">Hủy đơn</button>	                                            	
+	                                            </span>
+                                            </td>   
+                                            <td ng-if="item.status !== 'ChoXacNhan' && item.status !== 'ChuanBi'">
+                                            	<span class="tbl-btn">
+	                                            	<button class="btn btn-lg btn-primary" disabled>Hủy đơn</button>	                                            	
+	                                            </span>
+                                            </td>                                                 
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End User history section -->
+
+
+</main>   
+</body>
+</html>

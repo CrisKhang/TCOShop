@@ -1,0 +1,361 @@
+<div xmlns:th="http://www.thymeleaf.org">
+
+<div id="ec-overlay" ><span class="loader_img"></span></div>
+
+    <!-- Header start  -->
+    <header class="ec-header">
+        <!--Ec Header Top Start -->
+        <div class="header-top">
+            <div class="container">
+                <div class="row align-items-center">
+                    <!-- Header Top social Start -->
+                    <div class="col text-left header-top-left d-none d-lg-block">
+                        <div class="header-top-social">
+                            <span class="social-text text-upper">Theo dõi chúng tôi trên:</span>
+                            <ul class="mb-0">
+                                <li class="list-inline-item"><a class="hdr-facebook" href="https://www.facebook.com/tcoshopp"><i class="ecicon eci-facebook"></i></a></li>
+                                <li class="list-inline-item"><a class="hdr-twitter" href="#"><i class="ecicon eci-twitter"></i></a></li>
+                                <li class="list-inline-item"><a class="hdr-instagram" href="#"><i class="ecicon eci-instagram"></i></a></li>
+                                <li class="list-inline-item"><a class="hdr-linkedin" href="#"><i class="ecicon eci-linkedin"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Header Top social End -->
+                    <!-- Header Top Message Start -->
+                    <div class="col text-center header-top-center">
+                        <div class="header-top-message text-upper">
+
+                        </div>
+                    </div>
+                    <!-- Header Top Message End -->
+                    <!-- Header Top Language Currency -->
+                    <div class="col header-top-right d-none d-lg-block">
+                        <div class="header-top-lan-curr d-flex justify-content-end">
+                           
+
+                        </div>
+                    </div>
+                    <!-- Header Top Language Currency -->
+                    <!-- Header Top responsive Action -->
+                    <div class="col d-lg-none ">
+                        <div class="ec-header-bottons">
+                            <!-- Header User Start -->
+                            <div class="ec-header-user dropdown">
+                                <button class="dropdown-toggle" data-bs-toggle="dropdown"><img
+                                        th:src="@{/assets/images/icons/user.svg}" class="svg_img header_svg" alt="" /></button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a class="dropdown-item" th:href="@{/register}">Đăng ký</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/checkout}">Thanh toán</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/login}">Đăng nhập</a></li>
+                                </ul>
+                            </div>
+                            <!-- Header User End -->
+                            <!-- Header Cart Start -->
+                            <a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
+                                <div class="header-icon"><img th:src="@{/assets/images/icons/wishlist.svg}"
+                                        class="svg_img header_svg" alt="" /></div>
+                                <span class="ec-header-count"></span>
+                            </a>
+                            <!-- Header Cart End -->
+                            <!-- Header Cart Start -->
+                            <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
+                                <div class="header-icon"><img th:src="@{/assets/images/icons/cart.svg}"
+                                        class="svg_img header_svg" alt="" /></div>
+                                <span class="ec-header-count cart-count-lable">3</span>
+                            </a>
+                            <!-- Header Cart End -->
+                            <!-- Header menu Start -->
+                            <a href="#ec-mobile-menu" class="ec-header-btn ec-side-toggle d-lg-none">
+                                <img th:src="@{/assets/images/icons/menu.svg}" class="svg_img header_svg" alt="icon" />
+                            </a>
+                            <!-- Header menu End -->
+                        </div>
+                    </div>
+                    <!-- Header Top responsive Action -->
+                </div>
+            </div>
+        </div>
+        <!-- Ec Header Top  End -->
+        <!-- Ec Header Bottom  Start -->
+        <div class="ec-header-bottom d-none d-lg-block">
+            <div class="container position-relative">
+                <div class="row">
+                    <div class="ec-flex">
+                        <!-- Ec Header Logo Start -->
+                        <div class="align-self-center">
+                            <div class="header-logo">
+                                <a th:href="@{/home}"><img th:src="@{/assets/images/logo/logo.png}" alt="Site Logo" /><img
+                                        class="dark-logo" th:src="@{/assets/images/logo/dark-logo.png}" alt="Site Logo"
+                                        style="display: none;" /></a>
+                            </div>
+                        </div>
+                        <!-- Ec Header Logo End -->
+
+                        <!-- Ec Header Search Start -->
+                        <div class="align-self-center">
+                            <div class="header-search">
+                                <form class="ec-btn-group-form" action="#">
+                                    <input  onkeyup="showsearch()" id="searchClient" class="form-control menusp" placeholder="Tìm kiếm sản phẩm" ng-model="searchProduct"
+								type="text">
+								<ul class="ec-search-cat-block2">
+									<li ng-repeat="product in products | filter: searchProduct | limitTo: 4">
+										<a th:href="@{|/product/detail/{{product.id}}|}"><img th:src="@{|/images/products/{{product.image1}}|}" style="width: 50px;">{{product.name}}</a>
+									</li>
+								</ul>
+                                    <button class="submit" type="submit"><img th:src="@{/assets/images/icons/search.svg}"
+                                            class="svg_img header_svg" alt="" /></button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Ec Header Search End -->
+
+                        <!-- Ec Header Button Start -->
+                        <div class="align-self-center">
+                            <div class="ec-header-bottons">
+
+                                <!-- Header User Start -->
+					<div class="ec-header-user dropdown">
+						<th:block th:if="${#request.remoteUser}">
+							<button class="dropdown-toggle" data-bs-toggle="dropdown">
+								<img src="assets/images/icons/user_5.svg" class="svg_img top_svg"
+									alt="" /><span class="ec-btn-title" id="nguoidunghientai">Xin chào, [[${#request.remoteUser}]]</span>
+							</button>
+							<p id="currentUsername" style="display:none;">[[${#request.remoteUser}]]</p>
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li><a class="dropdown-item" th:href="@{/user/profile}">Thông tin tài khoản</a></li>
+								<li><a class="dropdown-item" th:href="@{/order/history}">Lịch sử giao dịch</a></li>
+								<li><a class="dropdown-item" th:href="@{/order/transaction}">Lịch sử thanh toán</a></li>
+								<li><a class="dropdown-item" th:href="@{/user/change-password}">Đổi mật khẩu</a></li>
+								<li><a class="dropdown-item" th:href="@{/user_logout}">Đăng xuất</a></li>
+							</ul>
+						</th:block>		
+						<th:block th:unless="${#request.remoteUser}">
+							<button class="dropdown-toggle" data-bs-toggle="dropdown">
+								<img src="assets/images/icons/user_5.svg" class="svg_img top_svg"
+									alt="" /><span class="ec-btn-title" id="nguoidunghientai">Tài khoản</span>
+							</button>
+							<p id="currentUsername" style="display:none;">404</p>
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li><a class="dropdown-item" th:href="@{/register}">Đăng ký</a></li>
+								<!-- 
+								<li><a class="dropdown-item" href="checkout.html">Thanh
+										toán</a></li>
+								 -->
+								<li><a class="dropdown-item" th:href="@{/login}">Đăng nhập</a></li>
+							</ul>
+						</th:block>	
+					</div>
+                                
+                                
+                                <!-- Header User End -->
+                                <!-- Header wishlist Start -->
+                                <a th:if="${#request.remoteUser}" th:href="@{/product/favorites}" class="ec-header-btn ec-header-wishlist">
+                                    <div class="header-icon"><img th:src="@{/assets/images/icons/wishlist.svg}"
+                                            class="svg_img header_svg" alt="" /></div>
+                                </a>
+                                <!-- Header wishlist End -->
+                                <!-- Header Cart Start -->
+                                <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
+                                    <div class="header-icon"><img th:src="@{/assets/images/icons/cart.svg}"
+                                            class="svg_img header_svg" alt="" /></div>
+                                    <span class="ec-header-count cart-count-lable">{{cart.count}}</span>
+                                </a>
+                                <!-- Header Cart End -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Ec Header Button End -->
+        <!-- Header responsive Bottom  Start -->
+        <div class="ec-header-bottom d-lg-none">
+            <div class="container position-relative">
+                <div class="row ">
+
+                    <!-- Ec Header Logo Start -->
+                    <div class="col">
+                        <div class="header-logo">
+                            <a th:href="@{/home}"><img th:src="@{/assets/images/logo/logo.png}" alt="Site Logo" /><img
+                                    class="dark-logo" th:src="@{/assets/images/logo/dark-logo.png}" alt="Site Logo"
+                                    style="display: none;" /></a>
+                        </div>
+                    </div>
+                    <!-- Ec Header Logo End -->
+                    <!-- Ec Header Search Start -->
+                    <div class="col">
+                        <div class="header-search">
+                            <form class="ec-btn-group-form" action="#">
+                                <input  onkeyup="showsearch2()" id="searchClient2" class="form-control menusp" placeholder="Tìm kiếm sản phẩm" ng-model="searchProduct"
+								type="text">
+								<ul class="ec-search-cat-block3">
+									<li ng-repeat="product in products | filter: searchProduct | limitTo: 4">
+										<a th:href="@{|/product/detail/{{product.id}}|}"><img th:src="@{|/images/products/{{product.image1}}|}" style="width: 50px;">{{product.name}}</a>
+									</li>
+								</ul>
+                                <button class="submit" type="submit"><img th:src="@{/assets/images/icons/search.svg}"
+                                        class="svg_img header_svg" alt="icon" /></button>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Ec Header Search End -->
+                </div>
+            </div>
+        </div>
+        <!-- Header responsive Bottom  End -->
+        
+        <!-- tco Mobile Menu Start -->
+        <div id="ec-mobile-menu" class="ec-side-cart ec-mobile-menu">
+            <div class="ec-menu-title">
+                <span class="menu_title">Menu của tôi</span>
+                <button class="ec-close">X</button>
+            </div>
+            <div class="ec-menu-inner">
+                <div class="ec-menu-content">
+                    <ul>
+                        <li class="dropdown"><a th:href="@{/home}">Trang
+                                chủ</a>
+                            <!-- 
+                            <ul class="sub-menu">
+                                <li><a href="index.html">Fashion 1</a></li>
+                                <li><a href="demo-2.html">Fashion 2</a></li>
+                                <li><a href="demo-3.html">Furniture</a></li>
+                                <li><a href="demo-4.html">Mix products</a></li>
+                                <li><a href="demo-5.html">Electronic</a></li>
+                            </ul>
+                                 -->
+                        </li>
+                        <li class="dropdown"><span class="main-label-note-new" data-toggle="tooltip"
+                                title="NEW"></span><a href="javascript:void(0)">Danh mục</a>
+                            <ul class="sub-menu" style="width:250px;">
+                                <li th:each="category : ${categories}" class="dropdown position-static">
+                                    <a th:href="@{|/product/list?cid=${category.id}|}"><img
+                                            th:src="@{|/images/category/${category.icon}|}"
+                                            style="width: 20px; margin-right: 10px;">[[${category.name}]] <i
+                                            class="ecicon eci-angle-right"></i></a>
+                                    <ul class="sub-menu sub-menu-child" style="width: 60%;">
+                                        <li th:each="subcategory : ${category.subcategories}"> <a
+                                                th:href="@{|/product/list?scid=${subcategory.id}|}"><img
+                                                    th:src="@{|/images/subcategory/${subcategory.icon}|}"
+                                                    style="width: 30px;">[[${subcategory.name}]]</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a th:href="@{|/product/list|}">Sản
+                                phẩm</a>
+                        </li>
+                        <li class="dropdown"><a th:href="@{/about-us}" }>About Us</a></li>
+                        <li class="dropdown"><span class="main-label-note-new" data-toggle="tooltip"
+                                title="NEW"></span><a th:href="@{|/blog|}">Blog</a>
+                        </li>
+                        <li class="dropdown"><a th:href="@{|/faq|}">FAQ</a>
+                        </li>
+                        <li class="dropdown"><a th:href="@{|/error-page|}">Tổng hợp</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="header-res-lan-curr">
+                    <div class="header-top-lan-curr">
+                        <!-- Language Start -->
+                        <div class="header-top-lan dropdown">
+                            <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Ngôn ngữ <i
+                                    class="ecicon eci-caret-down" aria-hidden="true"></i></button>
+                            <ul class="dropdown-menu">
+                                <li class="active"><a class="dropdown-item" href="#">English</a></li>
+                                <li><a class="dropdown-item" href="#">Italiano</a></li>
+                            </ul>
+                        </div>
+                        <!-- Language End -->
+                        <!-- Currency Start -->
+                        <div class="header-top-curr dropdown">
+                            <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Tiền tệ <i
+                                    class="ecicon eci-caret-down" aria-hidden="true"></i></button>
+                            <ul class="dropdown-menu">
+                                <li class="active"><a class="dropdown-item" href="#">USD $</a></li>
+                                <li><a class="dropdown-item" href="#">EUR €</a></li>
+                            </ul>
+                        </div>
+                        <!-- Currency End -->
+                    </div>
+                    <!-- Social Start -->
+                    <div class="header-res-social">
+                        <div class="header-top-social">
+                            <ul class="mb-0">
+                                <li class="list-inline-item"><a class="hdr-facebook" href="#"><i class="ecicon eci-facebook"></i></a></li>
+                                <li class="list-inline-item"><a class="hdr-twitter" href="#"><i class="ecicon eci-twitter"></i></a></li>
+                                <li class="list-inline-item"><a class="hdr-instagram" href="#"><i class="ecicon eci-instagram"></i></a></li>
+                                <li class="list-inline-item"><a class="hdr-linkedin" href="#"><i class="ecicon eci-linkedin"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Social End -->
+                </div>
+            </div>
+        </div>
+        <!-- tco mobile Menu End -->
+    </header>
+    <!-- Header End  -->
+
+    <!-- tco Cart Start -->
+    <div class="ec-side-cart-overlay"></div>
+    <div id="ec-side-cart" class="ec-side-cart">
+        <div class="ec-cart-inner">
+            <div class="ec-cart-top">
+                <div class="ec-cart-title">
+                    <span class="cart_title">Giỏ hàng của tôi</span>
+                    <button class="ec-close">❌</button>
+                </div>
+                <ul class="eccart-pro-items" ng-if="cart.count > 0" ng-repeat="item in cart.items">
+                    <li>
+                        <a th:href="@{|/product/detail/{{item.id}}|}" class="sidtco_pro_img"><img
+                                th:src="@{|/images/products/{{item.image1}}|}" alt="product"></a>
+                        <div class="ec-pro-content">
+                            <a th:href="@{|/product/detail/{{item.id}}|}" class="cart_pro_title">{{item.name}}</a>
+                            <span class="cart-price"><span>{{item.price * (100 - item.discount)/100  | currency:'':0}} VNĐ</span> x {{item.qty}}</span>
+                            <div class="qty-plus-minus">
+                                <input class="qty-input" ng-change="cart.saveToSessionStorage()" ng-model="item.qty" type="number" min="1">
+                            </div>
+                            <a href="javascript:void(0)" class="remove" th:attr="ng-click=@{|cart.remove(item.id)|}">❌</a>
+                        </div>
+                    </li>
+                </ul>
+               <ul class="eccart-pro-items" ng-if="cart.count == 0">
+                    <li>
+                        <div class="ec-pro-content">
+							Bạn chưa có sản phẩm
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="ec-cart-bottom">
+                <div class="cart-sub-total">
+                    <table class="table cart-table">
+                        <tbody >
+                            <tr ng-show="true">
+                                <td class="text-left">Tổng giá sản phẩm :</td>
+                                <td class="text-right">{{cart.amount | currency:'':0}} VNĐ</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">Phí ship :</td>
+                                <td class="text-right" ng-if="cart.ship == 0 && cart.count > 0">Miễn phí</td>
+                                <td class="text-right" ng-if="cart.ship == 0 && cart.count == 0">{{cart.ship | currency:'':0}} VNĐ</td>
+                                <td class="text-right" ng-if="cart.ship > 0">{{cart.ship | currency:'':0}} VNĐ</td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-left">Tổng hoá đơn :</td>
+                                <td class="text-right primary-color">{{cart.amount+cart.ship | currency:'':0}} VNĐ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="cart_btn">
+                    <a th:href="@{|/cart|}" class="btn btn-primary">Xem giỏ hàng</a>
+                    <button ng-if="cart.count == 0" class="btn btn-secondary" disabled>Thanh toán</button>
+                    <a ng-if="cart.count > 0" th:href="@{|/checkout|}" class="btn btn-secondary">Thanh toán</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

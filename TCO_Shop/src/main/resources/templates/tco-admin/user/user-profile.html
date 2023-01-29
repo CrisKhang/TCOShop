@@ -1,0 +1,143 @@
+
+			<!DOCTYPE html>
+			<html xmlns:th="http://www.thymeleaf.org"
+			th:replace="~{tco-admin/layout-admin/index :: dynamic(~{::main})}">
+			<body>
+			<main ng-controller="user-management-ctrl">
+			
+			
+			<!-- CONTENT WRAPPER -->
+			<div class="ec-content-wrapper" th:object="${user}">
+				<div class="content">
+					<div class="breadcrumb-wrapper breadcrumb-contacts">
+						<div>
+							<h1>User Profile</h1>
+							<p class="breadcrumbs"><span><a href="index.html">Home</a></span>
+								<span><i class="mdi mdi-chevron-right"></i></span>Profile
+							</p>
+						</div>
+						<div>
+							<a href="user-list.html" class="btn btn-primary">Edit</a>
+						</div>
+					</div>
+					<div class="card bg-white profile-content">
+						<div class="row">
+							<div class="col-lg-4 col-xl-3">
+								<div class="profile-content-left profile-left-spacing">
+									<div class="text-center widget-profile px-0 border-0">
+										<div class="card-img mx-auto rounded-circle">
+											<img th:src="@{|/images/user/${user.avatar}|}" alt="user image">
+										</div>
+										<div class="card-body">
+											<h4 class="py-2 text-dark">[[${user.fullname}]]</h4>
+											<p>[[${user.status ? 'Đã kích hoạt' : 'Chưa kích hoạt'}]]</p>
+										</div>
+									</div>
+			
+								
+			
+									<hr class="w-100">
+			
+									<div class="contact-info pt-4">
+										<h5 class="text-dark">Thông tin tài khoản</h5>
+										<p class="text-dark font-weight-medium pt-24px mb-2">Địa chỉ Email</p>
+										<p>[[${user.email}]]</p>
+										<p class="text-dark font-weight-medium pt-24px mb-2">Tài khoản</p>
+										<p>[[${user.username}]]</p>
+										<p class="text-dark font-weight-medium pt-24px mb-2">Mật khẩu</p>
+										<p>[[${user.password}]]</p>
+										
+									</div>
+								</div>
+							</div>
+			
+							<div class="col-lg-8 col-xl-9">
+								<div class="profile-content-right profile-right-spacing py-5">
+									<ul class="nav nav-tabs px-3 px-xl-5 nav-style-border" id="myProfileTab" role="tablist">
+										<li class="nav-item" role="presentation">
+											<button class="nav-link active" id="settings-tab" data-bs-toggle="tab"
+												data-bs-target="#settings" type="button" role="tab"
+												aria-controls="settings" aria-selected="false">Tùy chỉnh</button>
+										</li>
+									</ul>
+									<div class="tab-content px-3 px-xl-5" id="myTabContent">
+										<label class="error-mess" th:if = "${updateProfileMessage} != null">[[${updateProfileMessage}]]</label>
+										<div class="tab-pane fade show active" id="settings" role="tabpanel"
+											aria-labelledby="settings-tab">
+											<div class="tab-pane-content mt-5">
+												<form th:action = "@{|/tco-admin/userProfileUpdate/${user.username}|}" enctype="multipart/form-data" method = "post">
+													<div class="form-group row mb-6">
+											<div class="row ec-vendor-uploads">
+												<div class="ec-vendor-img-upload">
+													<div class="ec-vendor-main-img">
+													
+														<div class="avatar-upload">
+														<div class="avatar-edit">
+															<input type='file' name="userAvatar" id="imageUpload" class="ec-image-upload"
+																accept=".png, .jpg, .jpeg" onchange="angular.element(this).scope().imageChanged(this.files)"/>
+															<label for="imageUpload"><img th:src="@{/assets-admin/img/icons/edit.svg}"
+																	class="svg_img header_svg" alt="edit" /></label>
+														</div>
+														<div class="avatar-preview ec-preview">
+															<div class="imagePreview ec-div-preview">
+																<img class="ec-image-preview"
+																	th:src="@{|/images/user/*{avatar}|}"
+																	alt="Chọn ảnh đại diện" style="width: 20%"/>
+															</div>
+														</div>
+													</div>
+													</div>
+												</div>
+											</div>
+										</div>
+			
+													<div class="row mb-2">
+														<div class="col-lg-12">
+															<div class="form-group">
+																<label for="firstName">Họ và Tên</label>
+																<input th:field = "${user.fullname}" type="text" class="form-control" id="firstName"
+																	value="First name">
+															</div>
+														</div>
+			
+														
+													</div>
+													<div class="form-group mb-4">
+														<label for="phone">Số điện thoại</label><br>
+														<label class="error-mess" th:if = "${phoneError} != null">[[${phoneError}]]</label>
+														<input th:field = "${user.phone}" type="text" class="form-control" id="phone"
+															>
+														
+													</div>
+													<div class="form-group mb-4">
+														<label for="address">Địa chỉ</label>
+														<input th:field = "${user.address}" type="text" class="form-control" id="address"
+															>
+													</div>
+													<div class="form-group mb-4">
+														<label for="introduce">Mô tả</label>
+														<input th:field = "${user.introduce}" type="text" class="form-control" id="introduce"
+															>
+													</div>
+													
+			
+													<div class="d-flex justify-content-end mt-5">
+														<button type="submit"
+															class="btn btn-primary mb-2 btn-pill">Cập nhật</button>
+													</div>
+												</form>
+											</div>
+										</div>
+			
+									</div>
+								</div>
+							</div>
+			
+						</div>
+					</div>
+				</div> <!-- End Content -->
+			</div> <!-- End Content Wrapper -->
+			
+			</main>   
+			</body>
+			</html>
