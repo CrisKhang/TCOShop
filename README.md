@@ -1,4 +1,4 @@
-#tco_shop
+
 Dự án thực hành Spring Boot. Mô hình MVC
 
 Tải TCO_Shop.sql, TCO_Shop
